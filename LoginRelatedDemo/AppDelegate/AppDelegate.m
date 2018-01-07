@@ -23,7 +23,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    BOOL isLogin = NO;
+    
+    UIViewController *tempVC = [[UIViewController alloc] init];
+    tempVC.view.layer.contents = (__bridge id _Nullable)([UIImage imageNamed:[self getLaunchImageName]].CGImage);
+    self.window.rootViewController = tempVC;
+    
+    BOOL isLogin = [[DXDDefultInfoHelper sharedInstance] isLogin];
     [self switchRootController:isLogin];
     [self.window makeKeyAndVisible];
     return YES;
@@ -55,6 +60,19 @@
     return _loginController;
 }
 
+- (NSString *) getLaunchImageName {
+    CGSize viewSize = self.window.bounds.size;
+    NSString *viewOrientation = @"Portrait";    //横屏请设置成 @"Landscape"
+    NSString *launchImage = nil;
+    NSArray* imagesDict = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UILaunchImages"];
+    for (NSDictionary* dict in imagesDict) {
+        CGSize imageSize = CGSizeFromString(dict[@"UILaunchImageSize"]);
+        if (CGSizeEqualToSize(imageSize, viewSize) && [viewOrientation isEqualToString:dict[@"UILaunchImageOrientation"]]) {
+            launchImage = dict[@"UILaunchImageName"];
+        }
+    }
+    return launchImage;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
