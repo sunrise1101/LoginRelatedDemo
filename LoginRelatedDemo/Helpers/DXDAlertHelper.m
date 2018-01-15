@@ -16,7 +16,7 @@
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    [DXDAlertHelper addCancelActionTarget:alert title:@"确定" action:^(UIAlertAction *action) {}];
+    [self addCancelActionTarget:alert title:@"确定" action:^(UIAlertAction *action) {}];
     PBMAINDelay(PBANIMATE_DURATION, ^{
         UIWindow *window =[UIApplication sharedApplication].keyWindow;
         [window.rootViewController presentViewController:alert animated:true completion:nil];
@@ -29,7 +29,7 @@
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    [DXDAlertHelper addCancelActionTarget:alert title:@"确定" action:^(UIAlertAction *action) {}];
+    [self addCancelActionTarget:alert title:@"确定" action:^(UIAlertAction *action) {}];
     __weak typeof(&*target) weakTarget = target;
     if (weakTarget)
         [weakTarget presentViewController:alert animated:YES completion:nil];
@@ -40,14 +40,14 @@
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
-    [DXDAlertHelper addCancelActionTarget:alert title:btnTitle action:^(UIAlertAction *action) {}];
+    [self addCancelActionTarget:alert title:btnTitle action:^(UIAlertAction *action) {}];
     __weak typeof(&*target) weakTarget = target;
     if (weakTarget)
         [weakTarget presentViewController:alert animated:YES completion:nil];
 }
 
 + (void)alertInfo:(NSString *)title withMessage:(NSString *)message withOKbtnTitle:(NSString *)OKbtnTitle withCancelbtnTitle:(NSString *)cancelbtnTitle withTarget:(id)target withOkHandler:(SEL)handleOk {
-    [DXDAlertHelper alertInfo:title withMessage:message withOKbtnTitle:OKbtnTitle withCancelbtnTitle:cancelbtnTitle withTarget:target withOkHandler:handleOk withCancleHandler:nil];
+    [self alertInfo:title withMessage:message withOKbtnTitle:OKbtnTitle withCancelbtnTitle:cancelbtnTitle withTarget:target withOkHandler:handleOk withCancleHandler:nil];
 }
 
 + (void)alertInfo:(NSString *)title withMessage:(NSString *)message withOKbtnTitle:(NSString *)OKbtnTitle withCancelbtnTitle:(NSString *)cancelbtnTitle withTarget:(id)target withOkHandler:(SEL)handleOk withCancleHandler:(SEL)handleCancle {
@@ -57,11 +57,11 @@
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     __weak typeof(&*target) weakTarget = target;
-    [DXDAlertHelper addActionTarget:alert title:cancelbtnTitle action:^(UIAlertAction *action) {
+    [self addActionTarget:alert title:cancelbtnTitle action:^(UIAlertAction *action) {
         if (weakTarget && handleCancle)
             ((void (*)(id, SEL))[weakTarget methodForSelector:handleCancle])(weakTarget, handleCancle);
     }];
-    [DXDAlertHelper addCancelActionTarget:alert title:OKbtnTitle action:^(UIAlertAction *action) {
+    [self addCancelActionTarget:alert title:OKbtnTitle action:^(UIAlertAction *action) {
         if (weakTarget && handleOk) {
             void (*func)(id, SEL) = (void *)[weakTarget methodForSelector:handleOk];
             func(weakTarget, handleOk);
@@ -72,19 +72,19 @@
 }
 
 + (void)addCancelActionTarget:(UIAlertController*)alertController title:(NSString *)title action:(void(^)(UIAlertAction *action))actionTarget {
-    [DXDAlertHelper addCancelActionTarget:alertController title:title color:c_grapefruit action:actionTarget];
+    [self addCancelActionTarget:alertController title:title color:c_grapefruit action:actionTarget];
 }
 
 + (void)addActionTarget:(UIAlertController *)alertController title:(NSString *)title action:(void(^)(UIAlertAction *action))actionTarget {
-    [DXDAlertHelper addActionTarget:alertController title:title color:c_black action:actionTarget];
+    [self addActionTarget:alertController title:title color:c_black action:actionTarget];
 }
 
 + (void)addActionTarget:(UIAlertController *)alertController title:(NSString *)title color:(NSString *)color action:(void(^)(UIAlertAction *action))actionTarget {
-    [DXDAlertHelper addActionTarget:alertController style:UIAlertActionStyleDefault title:title color:color action:actionTarget];
+    [self addActionTarget:alertController style:UIAlertActionStyleDefault title:title color:color action:actionTarget];
 }
 
 + (void)addCancelActionTarget:(UIAlertController *)alertController title:(NSString *)title color:(NSString *)color action:(void(^)(UIAlertAction *action))actionTarget {
-    [DXDAlertHelper addActionTarget:alertController style:UIAlertActionStyleCancel title:title color:color action:actionTarget];
+    [self addActionTarget:alertController style:UIAlertActionStyleCancel title:title color:color action:actionTarget];
 }
 
 + (void)addActionTarget:(UIAlertController *)alertController style:(UIAlertActionStyle)style title:(NSString *)title color:(NSString *)color action:(void(^)(UIAlertAction *action))actionTarget {
